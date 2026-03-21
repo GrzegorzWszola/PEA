@@ -1,0 +1,13 @@
+[config]
+algorithms = ["brute-force", "NN", "RNN", "RAND"]
+instance_sizes = [5, 10 ,11 ,12, 13, 15]
+repetitions = 5
+iterations = 1000
+start_from = 10
+mode = "correctness"
+
+[data]
+input = ""
+optimal = ""
+output_path = "../result/result.csv"
+show_data = 1
