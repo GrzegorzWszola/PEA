@@ -4,6 +4,8 @@
 Result* BnB::solve(int** subMatrix, int N, const std::string& sAlgo) {
     START_TIMER
     Result* result = new Result();
+    long long visited_nodes = 0; // Liczba odwiedzonych węzłów
+    size_t peak_size = 0;        // Maksymalny rozmiar kolejki/stosu
 
     // Stwórz węzeł początkowy
     BBNode root(N);
@@ -33,15 +35,17 @@ Result* BnB::solve(int** subMatrix, int N, const std::string& sAlgo) {
 
     // Wkladamu wezel poczatkowy do struktury danych
     ds->push(root);
+    peak_size = 1;
 
     int best_cost = INF;
     int* best_path = new int[N + 1];
-
+    if (sAlgo.back() == '1') best_cost = NNForUpperBound(subMatrix, N) + 1;
 
     // Glowna petla algorytmu
     while(!ds->empty()) {
         // Aktualne maisto
         BBNode curr(ds->pop());
+        visited_nodes++;
 
         // Pruning (okrajamy) wezly ktore napewno beda gorsze
         if (curr.lb >= best_cost)
@@ -79,8 +83,14 @@ Result* BnB::solve(int** subMatrix, int N, const std::string& sAlgo) {
                 BBNode child = createChild(curr, current_city, i, N);
 
                 // Wepchnij tylko wezly ktore moga poprawic wynik
-                if (child.lb < best_cost) 
+                if (child.lb < best_cost) {
                     ds->push(child);
+
+                    int currentDSSize = ds->getSize();
+                    if (currentDSSize > peak_size) {
+                        peak_size = currentDSSize;
+                    }
+                }   
             }
         }
     }
@@ -88,6 +98,9 @@ Result* BnB::solve(int** subMatrix, int N, const std::string& sAlgo) {
     result->dimension = N;
     result->length = best_cost;
     result->tour = best_path;
+    result->peak_size = peak_size;
+    result->visited_nodes = visited_nodes;
+
     result->time = STOP_TIMER
 
     delete ds;
@@ -185,5 +198,52 @@ BBNode BnB::createChild(const BBNode &parent, int from, int to, int n) {
     child.visited[to] = 1; 
     child.path[child.level] = to;
     return child;
+}
+
+int BnB::NNForUpperBound(int** matrix, int N, int start) {
+    Result* result = new Result();
+    // Aktualna trasa
+    int* tour = new int[N];
+    // Lista odwiedzonych miast
+    bool* visited = new bool[N]();
+    // Koszt trasy
+    int cost = 0;
+
+    // Zaczynamy od miasta 'start' wiec mozemy oznaczyc je jako odwiedzone
+    tour[0] = start;
+    visited[start] = true;
+
+
+    for (int step = 1; step < N; step++) {
+        // Aktaulnie wybrane miasto
+        int current = tour[step - 1];
+        // Minimalny dystans do nastepnego miasta
+        int minDist = INT_MAX;
+        // Najblizsze miasto
+        int nearest = -1;
+
+        // Dla wybranego miasta znajdz najblizsza
+        // trase do nieodwiedzonego miasta
+        for (int j = 0; j < N; j++) {
+            if (!visited[j] && matrix[current][j] < minDist) {
+                minDist = matrix[current][j];
+                nearest = j;
+            }
+        }
+
+        // Zapisz wyniki
+        tour[step] = nearest;
+        visited[nearest] = true;
+        cost += minDist;
+    }
+    // Dodaj trase z ostatniego miasta do miasta 'start'
+    cost += matrix[tour[N - 1]][tour[0]];
+
+    result->dimension = N;
+    result->tour = tour;
+    result->length = cost;
+
+    delete result;
+    return cost;
 }
 

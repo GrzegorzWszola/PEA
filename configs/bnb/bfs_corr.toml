@@ -1,0 +1,10 @@
+[config]
+algorithms = ["BnB"]
+instance_sizes = [7, 8, 9, 10]
+mode = "correctness"
+search_algorithm = "BFS1"
+
+[data]
+input = "/home/grzeg/PEA/data_zajecia/tsp_10a.txt"
+optimal = "/home/grzeg/PEA/data_zajecia/br17.txt"
+output_path = "/home/grzeg/PEA/result/result_BFS.csv"

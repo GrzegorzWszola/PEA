@@ -64,9 +64,11 @@ namespace Utils {
                                     double error,
                                     int N,
                                     int iterations,
+                                    const std::string& sAlgo,
                                     int offset = 0) {
         // Wyswietl w konsoli
         std::cout << "Algorytm:" << algo << std::endl;
+        if (algo == "BnB") std::cout << "Algorytm przeszukiwania: " << sAlgo << std::endl;
         std::cout << "Ilosc miast (N): " << N << std::endl;
         std::cout << "Trasa dla punktow: " << offset + 1 << ", do: " << offset + N << std::endl;
         std::cout << "Dlugosc trasy: " << result->length << std::endl;
@@ -76,6 +78,10 @@ namespace Utils {
         std::cout << "Blad: " << error << "%" << std::endl;
         if (algo == "RAND") 
             std::cout << "iteracje: " << iterations << std::endl;
+        if (algo == "BnB") {
+            std::cout << "Szczytowa wielkosc: " << result->peak_size << std::endl;
+            std::cout << "Ilość odwiedzonych wierzchołków: " << result->visited_nodes << std::endl;
+        }
         if (data->getDimension() < 200) {
             std::cout << "Trasa: ";
             for (int i = 0; i < result->dimension; i++)
@@ -93,6 +99,7 @@ namespace Utils {
         }
 
         file << "Algorytm: " << algo << " Ilosc miast (N): " << N << "\n";  
+        if (algo == "BnB") file << "Algorytm przeszukiwania: " << sAlgo << "\n";
         file << "dlugosc: " << result->length << "\n";
         if (data->getOptimal() != nullptr && N == data->getDimension())
             file << "Dlugosc trasy optymalnej: " << data->getOptimal()->length << std::endl;
@@ -100,6 +107,10 @@ namespace Utils {
         file << "Blad: " << error << "%" << "\n";
         if (algo == "RAND") {
             file << "iteracje: " << iterations << "\n";
+        }
+        if (algo == "BnB") {
+            file << "Szczytowa wielkosc: " << result->peak_size << "\n";
+            file << "Ilość odwiedzonych wierzchołków: " << result->visited_nodes << "\n";
         }
         file << "trasa: ";
         for (int i = 0; i < result->dimension; i++)
@@ -141,9 +152,9 @@ namespace Utils {
         if (data->getOptimal() != nullptr && N == data->getDimension()) {
             // Optymalne rozwiazanie z pliku
             return ((double)(result->length - data->getOptimal()->length) / data->getOptimal()->length) * 100;
-        } else if (N <= 18) {
+        } else if (N <= 15) {
             // Oblicz brute force dla malych instancji
-            Result* optimalSolution = Algorithms::branch_and_bound(subMatrix, N, "Best_First");
+            Result* optimalSolution = Algorithms::branch_and_bound(subMatrix, N, "Best_First1");
             double error = ((double)(result->length - optimalSolution->length) / optimalSolution->length) * 100;
             delete optimalSolution;
             return error;
@@ -224,7 +235,7 @@ namespace Utils {
 
             if (result == nullptr) continue;
 
-            Utils::printAndSaveResult(result, data, config->getOutPath(), algoName, error, N, config->getIterations(), startOffset);
+            Utils::printAndSaveResult(result, data, config->getOutPath(), algoName, error, N, config->getIterations(), config->getSearchAlgo(), startOffset);
             delete result;
         }
     }

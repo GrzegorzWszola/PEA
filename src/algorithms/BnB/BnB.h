@@ -104,6 +104,7 @@ class BnB {
         static int reduceMatrix(int** &matrix, int n);
         static BBNode createChild(const BBNode &parent, int from, int to, int n);
         static void copyMatrix(int** &to, int** from, int n) ;
+        static int NNForUpperBound(int** matrix, int N, int start = 0);
     public:
         static Result* solve(int** subMatrix, int N, const std::string& sAlgo);
 };

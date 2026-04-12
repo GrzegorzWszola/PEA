@@ -1,0 +1,10 @@
+[config]
+algorithms = ["BnB"]
+instance_sizes = [15]
+mode = "correctness"
+search_algorithm = "DFS"
+
+[data]
+input = "/home/grzeg/PEA/data_zajecia/br17.txt"
+optimal = "/home/grzeg/PEA/data_zajecia/br17.txt"
+output_path = "/home/grzeg/PEA/result/result_max.csv"

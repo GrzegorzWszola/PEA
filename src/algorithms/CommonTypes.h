@@ -13,8 +13,10 @@ struct Result {
     int* tour;
     int dimension;
     double time;
+    int peak_size;
+    int visited_nodes;
 
-    Result() : length(0), tour(nullptr), dimension(0), time(0.0) {}
+    Result() : length(0), tour(nullptr), dimension(0), time(0.0), peak_size(0), visited_nodes(0) {}
 
     ~Result() { delete[] tour; }
 };

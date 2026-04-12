@@ -1,0 +1,10 @@
+[config]
+algorithms = ["BnB"]
+instance_sizes = [7, 8, 9, 10, 11, 12, 13, 14]
+mode = "correctness"
+search_algorithm = "Best_First"
+
+[data]
+input = "/home/grzeg/PEA/data_zajecia/br17.txt"
+optimal = "/home/grzeg/PEA/data_zajecia/br17.txt"
+output_path = "/home/grzeg/PEA/result/result_best_first.csv"

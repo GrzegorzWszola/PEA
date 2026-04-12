@@ -7,7 +7,7 @@
 #include <algorithm>
 
 constexpr std::array<std::string_view, 5> VALID_ALGORITHMS = {"brute-force", "NN", "RNN", "RAND", "BnB"};
-constexpr std::array<std::string_view, 3> VALID_SEARCH_ALGORITHMS = {"BFS", "DFS", "Best_First"};
+constexpr std::array<std::string_view, 6> VALID_SEARCH_ALGORITHMS = {"BFS1", "DFS1", "Best_First1", "BFS", "DFS", "Best_First"};
 
 class Config {
     private:
