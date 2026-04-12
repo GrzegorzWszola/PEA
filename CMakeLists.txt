@@ -12,6 +12,8 @@ set(SOURCES
     src/algorithms/NN.cpp
     src/algorithms/RNN.cpp
     src/algorithms/RAND.cpp
+    src/algorithms/BnB/BnB.cpp
 )
+
 
 add_executable(AplikacjaPEA ${SOURCES})

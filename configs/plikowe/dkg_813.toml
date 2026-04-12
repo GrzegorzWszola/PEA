@@ -1,0 +1,9 @@
+[config]
+algorithms = ["RNN", "NN", "RAND"]
+mode = "correctness"
+iterations = 10000
+
+[data]
+input = "/home/grzegorz/Desktop/PEA/Projekt1/data/dkg813.tsp"
+optimal = "/home/grzegorz/Desktop/PEA/Projekt1/optimal/dkg813.tour"
+output_path = "/home/grzegorz/Desktop/PEA/Projekt1/result/result_dkg813.csv"

@@ -1,0 +1,9 @@
+[config]
+algorithms = ["RNN", "NN", "RAND"]
+mode = "correctness"
+iterations = 10000
+
+[data]
+input = "/home/grzegorz/Desktop/PEA/Projekt1/data/xqf131.tsp"
+optimal = "/home/grzegorz/Desktop/PEA/Projekt1/optimal/xqf131.tour"
+output_path = "/home/grzegorz/Desktop/PEA/Projekt1/result/result_xqf131.csv"

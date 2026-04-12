@@ -1,0 +1,10 @@
+[config]
+algorithms = ["brute-force", "RNN", "NN", "RAND"]
+instance_sizes = [5, 7, 9, 10, 11, 12, 13, 14]
+mode = "correctness"
+iterations = 10000
+
+[data]
+input = "/home/grzegorz/Desktop/PEA/Projekt1/data/test15.txt"
+optimal = "/home/grzegorz/Desktop/PEA/Projekt1/optimal/ar9152.tour"
+output_path = "../result/result_corr_5-14.csv"

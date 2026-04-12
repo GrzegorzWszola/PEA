@@ -141,9 +141,9 @@ namespace Utils {
         if (data->getOptimal() != nullptr && N == data->getDimension()) {
             // Optymalne rozwiazanie z pliku
             return ((double)(result->length - data->getOptimal()->length) / data->getOptimal()->length) * 100;
-        } else if (N <= 14) {
+        } else if (N <= 18) {
             // Oblicz brute force dla malych instancji
-            Result* optimalSolution = Algorithms::brute_force(subMatrix, N);
+            Result* optimalSolution = Algorithms::branch_and_bound(subMatrix, N, "Best_First");
             double error = ((double)(result->length - optimalSolution->length) / optimalSolution->length) * 100;
             delete optimalSolution;
             return error;
@@ -173,6 +173,8 @@ namespace Utils {
                     result = Algorithms::RNN(data->getMatrix(), N, config->getIterations());
                 } else if (algoName == "RAND") {
                     result = Algorithms::RAND(data->getMatrix(), N, config->getIterations());
+                } else if (algoName == "BnB") {
+                    result = Algorithms::branch_and_bound(data->getMatrix(), N, config->getSearchAlgo());
                 }
 
                 delete data;
@@ -211,6 +213,9 @@ namespace Utils {
                 error = Utils::compareResults(data, result, subMatrix, N);
             } else if (algoName == "RAND") {
                 result = Algorithms::RAND(subMatrix, N, config->getIterations());
+                error = Utils::compareResults(data, result, subMatrix, N);
+            } else if (algoName == "BnB") {
+                result = Algorithms::branch_and_bound(subMatrix, N, config->getSearchAlgo());
                 error = Utils::compareResults(data, result, subMatrix, N);
             }
             

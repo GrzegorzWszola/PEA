@@ -1,0 +1,11 @@
+[config]
+algorithms = ["BnB"]
+instance_sizes = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+mode = "correctness"
+repetitions = 10
+search_algorithm = "DFS"
+
+[data]
+input = "/home/grzegorz/Desktop/PEA/Projekt1/data/br17.txt"
+optimal = "/home/grzegorz/Desktop/PEA/Projekt1/optimal/br17.txt"
+output_path = "../result/result.csv"

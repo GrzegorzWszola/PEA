@@ -1,0 +1,9 @@
+[config]
+algorithms = ["RNN"]
+instance_sizes = [20000, 22000, 23000, 25000]
+iterations = 5000
+repetitions = 20
+mode = "performance"
+
+[data]
+output_path = "../result/result_RNN.csv"

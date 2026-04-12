@@ -1,0 +1,9 @@
+[config]
+algorithms = ["brute-force", "RNN", "NN", "RAND"]
+instance_sizes = [7, 8, 9, 10, 11, 12, 13, 14]
+repetitions = 20
+iterations = 100000
+mode = "performance"
+
+[data]
+output_path = "../result/result_All_7-14.csv"

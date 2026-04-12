@@ -1,0 +1,8 @@
+[config]
+algorithms = ["NN"]
+instance_sizes = [10000, 20000, 30000]
+repetitions = 5
+mode = "performance"
+
+[data]
+output_path = "../result/result_nn.csv"

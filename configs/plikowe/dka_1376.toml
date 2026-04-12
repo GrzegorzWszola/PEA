@@ -1,0 +1,9 @@
+[config]
+algorithms = ["RNN", "NN", "RAND"]
+mode = "correctness"
+iterations = 10000
+
+[data]
+input = "/home/grzegorz/Desktop/PEA/Projekt1/data/dka1376.tsp"
+optimal = "/home/grzegorz/Desktop/PEA/Projekt1/optimal/dka1376.tour"
+output_path = "/home/grzegorz/Desktop/PEA/Projekt1/result/result_dka1376.csv"

@@ -1,15 +1,17 @@
 #include "Algorithms.h" 
 
 Result* Algorithms::brute_force(int** matrix, int N) {
+    START_TIMER
+    // Aktualna permutacja miast
     int* currentTour = new int[N];
     for (int i = 0; i < N; i++)
         currentTour[i] = i;
-
+    // Wynik koncowy
     Result* result = new Result();
-
+    // Tablica uzywana do przechowywania najkrotszej sciezki
     int* bestTour = new int[N];
-    int minCost = 1e18;
-    START_TIMER
+    // Przechowuje minimalny koszt aktualnej trasy
+    int minCost = INT_MAX;
 
 
     do {
@@ -34,11 +36,10 @@ Result* Algorithms::brute_force(int** matrix, int N) {
     } while (std::next_permutation(currentTour + 1 /*pomijamy node 0*/, currentTour + N));
 
 
-
-    result->time = STOP_TIMER
     result->dimension = N;
     result->tour = bestTour;
     result->length = minCost;
+    result->time = STOP_TIMER
     
     delete[] currentTour;
     return result;
