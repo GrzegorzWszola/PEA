@@ -1,2 +1,6 @@
 build/*
 result/*
+python_wykresy/env/
+build/
+.vscode/
+*.exe

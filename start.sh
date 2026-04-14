@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROGRAM="./build/AplikacjaPEA"
-CONFIGS_DIR="configs/plikowe"
+CONFIGS_DIR="configs/bnb/perf"
 
 for config in "$CONFIGS_DIR"/*.toml; do
     echo "Uruchamiam: $config"

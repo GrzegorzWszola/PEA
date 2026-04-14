@@ -106,20 +106,26 @@ Data* DataParser::parseMatrixData(const std::string& inputFilePath) {
     return new Data(dimension, nodeList, matrix, nullptr);
 }
 
-Data* DataParser::generateRandomMatrix(int N, int low, int high) {
+Data* DataParser::generateRandomMatrix(int N, int low, int high, bool symmetric) {
     std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<int> dist(low, high);
     
-    // Alokacja macierzy
     int** matrix = new int*[N];
     for (int i = 0; i < N; i++)
         matrix[i] = new int[N];
 
-    for (int i = 0; i < N; i++)
-        for (int j = 0; j < N; j++)
-            matrix[i][j] = (i == j) ? 0 : dist(rng);
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (i == j) {
+                matrix[i][j] = 0;
+            } else if (symmetric && j < i) {
+                matrix[i][j] = matrix[j][i];
+            } else {
+                matrix[i][j] = dist(rng);
+            }
+        }
+    }
 
-    // Brak wspolrzednych wiec nodeList pusty
     Node* nodeList = new Node[N];
     for (int i = 0; i < N; i++)
         nodeList[i] = Node(i + 1, 0, 0);

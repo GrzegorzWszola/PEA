@@ -43,6 +43,7 @@ Config* ConfigParser::parseConfig(const std::string& filePath) {
         tbl["config"]["iterations"].value_or(0),
         tbl["config"]["start_from"].value_or(0),
         tbl["config"]["search_algorithm"].value_or("BFS"),
+        tbl["config"]["is_symmetric"].value_or(false),
         tbl["data"]["show_data"].value_or(0)
     );
 }

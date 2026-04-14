@@ -1,0 +1,10 @@
+[config]
+algorithms = ["brute-force"]
+instance_sizes = [8, 9, 10, 11, 12, 13, 14]
+mode = "performance"
+repetitions = 20
+
+[data]
+input = "/home/grzeg/PEA/data_zajecia/tsp_10a.txt"
+optimal = "/home/grzeg/PEA/data_zajecia/br17.txt"
+output_path = "/home/grzeg/PEA/result/ub/result_brute_force_perf.csv"

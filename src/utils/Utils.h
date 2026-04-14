@@ -124,11 +124,17 @@ namespace Utils {
     inline void printAndSavePerformanceResults(const std::string& outPath,
                                                const std::string& algo, 
                                                int N,
-                                               double avgTime) {
+                                               double avgTime,
+                                               int peakSize,
+                                               int visitedNodes) {
         // Wyswietl w konsoli
         std::cout << "Algorytm: " << algo << std::endl;
         std::cout << "Ilosc miast (N): " << N << std::endl;
         std::cout << "Sredni czas: " << std::fixed << std::setprecision(4) << avgTime << " ms" << std::endl;
+        if (algo == "BnB") {
+            std::cout << "Szczytowa wielkosc: " << peakSize << std::endl;
+            std::cout << "Ilość odwiedzonych wierzchołków: " << visitedNodes << std::endl;
+        }
         std::cout << "------------------------" << std::endl;
 
         // Zapisz do pliku
@@ -139,11 +145,12 @@ namespace Utils {
         }
 
         if (file.tellp() == 0)
-            file << "algorytm;N;sredni_czas_ms;srednia_dlugosc\n";
+            file << "algorytm;N;sredni_czas_ms;srednia_dlugosc;wielkosc;odwiedzone_wierzcholki\n";
 
         file << algo << ";" 
             << N << ";" 
-            << std::fixed << std::setprecision(4) << avgTime << ";" ;
+            << std::fixed << std::setprecision(4) << avgTime << ";" 
+            << visitedNodes << ";" << peakSize;
         file << '\n';
         file.close();
     }
@@ -172,8 +179,10 @@ namespace Utils {
         for (int N : config->getInstanceSizes()) {   
 
             double totalTime = 0;
+            int maxPeakSize = 0;
+            int maxVisitedNodes = 0;
             for (int rep = 0; rep < config->getRepetitions(); rep++) {
-                Data* data = DataParser::generateRandomMatrix(N);
+                Data* data = DataParser::generateRandomMatrix(N, 0, 100, config->getIsSymmetric());
                 Result* result = nullptr;
 
                 if (algoName == "brute-force") {
@@ -192,11 +201,15 @@ namespace Utils {
                 if (result == nullptr) continue;
 
                 totalTime += result->time;
+                int peakSize = result->peak_size;
+                int visitedNodes = result->visited_nodes;
+                if (peakSize > maxPeakSize) maxPeakSize = peakSize;
+                if (visitedNodes > maxVisitedNodes) maxVisitedNodes = visitedNodes;
                 delete result;
             }
 
             double avgTime = totalTime / config->getRepetitions();
-            Utils::printAndSavePerformanceResults(config->getOutPath(), algoName, N, avgTime);
+            Utils::printAndSavePerformanceResults(config->getOutPath(), algoName, N, avgTime, maxPeakSize, maxVisitedNodes);
         }
     }
 

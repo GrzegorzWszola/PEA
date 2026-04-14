@@ -20,11 +20,12 @@ class Config {
         std::string inputPath, optimalPath, outPath;
         std::string mode;
         std::string searchAlgo;
+        bool isSymmetric;
     public:
         Config( std::vector<std::string> algo, std::vector<int> inst, int rep, std::string inPath,
-                std::string optPath, std::string mode, std::string outPath, int iterations, int startFrom, std::string searchAlgo, int showData)
+                std::string optPath, std::string mode, std::string outPath, int iterations, int startFrom, std::string searchAlgo, bool isSymmetric, int showData)
                 : algorithms(algo), instanceSizes(inst), repetitions(rep), inputPath(inPath),
-                optimalPath(optPath), mode(mode), outPath(outPath), iterations(iterations), startFrom(startFrom), showData(showData),
+                optimalPath(optPath), mode(mode), outPath(outPath), iterations(iterations), startFrom(startFrom), showData(showData), isSymmetric(isSymmetric),
                 searchAlgo(searchAlgo) {
                 
                 for (const auto& a : algorithms) {
@@ -53,6 +54,7 @@ class Config {
         const std::string& getOutPath() const { return outPath; };
         const std::string& getSearchAlgo() const  { return searchAlgo; };
         void setOutPath(const std::string& newPath) { this->outPath = newPath; };
+        bool getIsSymmetric() const { return isSymmetric; };
 
         void print() const {
             std::cout << "--- Konfiguracja ---" << std::endl;

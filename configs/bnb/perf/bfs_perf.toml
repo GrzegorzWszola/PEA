@@ -1,11 +1,12 @@
 [config]
 algorithms = ["BnB"]
-instance_sizes = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+instance_sizes = [7, 8, 9, 10, 11]
 mode = "performance"
 repetitions = 20
-search_algorithm = "DFS"
+search_algorithm = "BFS"
+is_symmetric = true
 
 [data]
 input = "/home/grzeg/PEA/data_zajecia/tsp_10a.txt"
 optimal = "/home/grzeg/PEA/data_zajecia/br17.txt"
-output_path = "/home/grzeg/PEA/result/result_DFS_perf.csv"
+output_path = "/home/grzeg/PEA/result/ub/result_BFS_perf.csv"
