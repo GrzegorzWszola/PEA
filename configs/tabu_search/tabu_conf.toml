@@ -1,0 +1,15 @@
+[config]
+algorithms = ["NN", "RNN", "TS"]
+# instance_sizes = [15]
+mode = "correctness"
+iterations = 50000
+tabu_size = 11
+cadence = 7
+aspiration = false
+greedy = true
+swap_algo = 2
+
+[data]
+input = "/home/grzeg/PEA/data/xqf131.tsp"
+optimal = "/home/grzeg/PEA/optimal/xqf131.tour"
+output_path = "../result/result_corr_5-14.csv"

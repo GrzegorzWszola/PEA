@@ -44,6 +44,15 @@ Config* ConfigParser::parseConfig(const std::string& filePath) {
         tbl["config"]["start_from"].value_or(0),
         tbl["config"]["search_algorithm"].value_or("BFS"),
         tbl["config"]["is_symmetric"].value_or(false),
-        tbl["data"]["show_data"].value_or(0)
+        tbl["data"]["show_data"].value_or(0),
+        tbl["config"]["tabu_size"].value_or(3),
+        tbl["config"]["cadence"].value_or(3),
+        tbl["config"]["aspiration"].value_or(false),
+        tbl["config"]["greedy"].value_or(true),
+        tbl["config"]["swap_algo"].value_or(0),
+        tbl["config"]["T0"].value_or(1.0),
+        tbl["config"]["alpha"].value_or(1.0),
+        tbl["config"]["epoch_length"].value_or(100),
+        tbl["config"]["cooling_scheme"].value_or(0)
     );
 }

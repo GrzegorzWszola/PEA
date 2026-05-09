@@ -195,6 +195,10 @@ namespace Utils {
                     result = Algorithms::RAND(data->getMatrix(), N, config->getIterations());
                 } else if (algoName == "BnB") {
                     result = Algorithms::branch_and_bound(data->getMatrix(), N, config->getSearchAlgo());
+                } else if (algoName == "TS") {
+                    result = Algorithms::tabu_search(data->getMatrix(), N, config->getTabuSize(), config->getIterations(), config->getCadence(), config->getSwapAlgo(), config->getAspiration(), config->getGreedy());
+                } else if (algoName == "SA") {
+                    result = Algorithms::simulated_annealing(data->getMatrix(), N, config->getT0(), config->getAlpha(), config->getEpochLength(), config->getCoolingScheme(), config->getSwapAlgo(), config->getGreedy());
                 }
 
                 delete data;
@@ -241,8 +245,14 @@ namespace Utils {
             } else if (algoName == "BnB") {
                 result = Algorithms::branch_and_bound(subMatrix, N, config->getSearchAlgo());
                 error = Utils::compareResults(data, result, subMatrix, N);
+            } else if (algoName == "TS") {
+                result = Algorithms::tabu_search(data->getMatrix(), N, config->getTabuSize(), config->getIterations(), config->getCadence(), config->getSwapAlgo(), config->getAspiration(), config->getGreedy());
+                error = Utils::compareResults(data, result, subMatrix, N);
+            } else if (algoName == "SA") {
+                result = Algorithms::simulated_annealing(data->getMatrix(), N, config->getT0(), config->getAlpha(), config->getEpochLength(), config->getCoolingScheme(), config->getSwapAlgo(), config->getGreedy());
+                error = Utils::compareResults(data, result, subMatrix, N);
             }
-            
+
             for (int i = 0; i < N; i++) delete[] subMatrix[i];
             delete[] subMatrix;
 

@@ -76,6 +76,16 @@ struct Queue : public IDataStructure<T> {
         return n;
     }
 
+    bool contains(const T& m) const {
+        for (int k = 0; k < size; k++) {
+            if (data[(front + k) % capacity] == m)
+                return true;
+        }
+        return false;
+    }
+
+    T& get(int k) { return data[(front + k) % capacity]; }
+
     bool empty() const override { return size == 0; }
 
     int getSize() const override { 
@@ -147,6 +157,60 @@ struct PriorityQueue : public IDataStructure<T>{
     int getSize() const override { 
         return this->size;
     }
+
+    private:
+        void resize() {
+            capacity *= 2;
+            T* newData = new T[capacity];
+            for (int i = 0; i < size; i++)
+                newData[i] = data[i];
+            delete[] data;
+            data = newData;
+        }
+};
+
+template<typename T>
+struct List {
+    T* data;
+    int size, capacity;
+
+    List(int cap = 16) : capacity(cap), size(0) {
+        data = new T[cap];
+    }
+
+    ~List() { delete[] data; }
+
+    bool contains(const T& m) const {
+        for (int k = 0; k < size; k++) {
+            if (data[k] == m)
+                return true;
+        }
+        return false;
+    }
+
+    T& get(int k) { return data[k]; }
+
+    void push_with_limit(const T& item, int limit) {
+        if (size >= limit) {
+            for (int k = 0; k < limit - 1; k++)
+                data[k] = data[k + 1];
+            data[limit - 1] = item;
+        } else {
+            if (size == capacity) resize();
+            data[size] = item;
+            size++;
+        }
+    }
+
+    void remove(int index) {
+        for (int i = index; i < size - 1; i++)
+            data[i] = data[i + 1];
+        size--;
+    }
+
+    bool empty() const { return size == 0; }
+
+    int getSize() const { return size; }
 
     private:
         void resize() {
