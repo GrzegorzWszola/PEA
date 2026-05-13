@@ -6,8 +6,8 @@
 #include <cstdlib>
 
 class SimulatedAnnealing {
-        static int NN(int** matrix, int N, int* tour);
-        static int randomTour(int** matrix, int N, int* tour);
+        static int RNN(int** matrix, int N, int* bestTour);
+        static int randomTour(int** matrix, int N, int* tour, int seed=42);
         static void applySwap(int* tour, int i, int j);
         static void applyInsert(int* tour, int N, int i, int j);
         static void applyInvert(int* tour, int i, int j);

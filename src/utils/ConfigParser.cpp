@@ -53,6 +53,7 @@ Config* ConfigParser::parseConfig(const std::string& filePath) {
         tbl["config"]["T0"].value_or(1.0),
         tbl["config"]["alpha"].value_or(1.0),
         tbl["config"]["epoch_length"].value_or(100),
-        tbl["config"]["cooling_scheme"].value_or(0)
+        tbl["config"]["cooling_scheme"].value_or(0),
+        tbl["data"]["optimal_value"].value_or(-1)
     );
 }

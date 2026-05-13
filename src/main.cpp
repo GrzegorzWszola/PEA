@@ -28,7 +28,10 @@ int main(int argc, char *argv[]) {
                 data = DataParser::parseMatrixData(config->getInputPath());
             } else if (ext == ".tsp") {
                 data = DataParser::parseInputData(config->getInputPath(), config->getOptimalPath());
-            } else {
+            } else if (ext == ".atsp") {
+                data = DataParser::parseATSP(config->getInputPath());
+            } 
+            else {
                 throw std::runtime_error("Nieznany format pliku: " + ext);
             }
         }

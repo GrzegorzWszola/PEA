@@ -190,16 +190,9 @@ struct List {
 
     T& get(int k) { return data[k]; }
 
-    void push_with_limit(const T& item, int limit) {
-        if (size >= limit) {
-            for (int k = 0; k < limit - 1; k++)
-                data[k] = data[k + 1];
-            data[limit - 1] = item;
-        } else {
-            if (size == capacity) resize();
-            data[size] = item;
-            size++;
-        }
+    void push(const T& item) {
+        if (size == capacity) resize();
+        data[size++] = item;
     }
 
     void remove(int index) {

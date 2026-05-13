@@ -1,0 +1,14 @@
+[config]
+algorithms = ["RNN", "SA"]
+mode = "correctness"
+greedy = true
+swap_algo = 0      
+T0 = 2000          
+alpha = 0.99
+epoch_length = 3000
+cooling_scheme = 0
+
+[data]
+input = "/home/grzeg/PEA/atsp/kro124p.atsp"
+optimal_value = 36230
+output_path = "result/result_corr_kro124p_no_asp.csv"

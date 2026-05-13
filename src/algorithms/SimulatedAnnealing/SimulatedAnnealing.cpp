@@ -1,4 +1,5 @@
 #include "SimulatedAnnealing.h"
+#include <random>
 
 Result* SimulatedAnnealing::solve(  int** matrix,
                                     int N,
@@ -15,7 +16,7 @@ Result* SimulatedAnnealing::solve(  int** matrix,
 
     // Rozwiazanie poczatkowe
     if (greedyStart)
-        bestCost = NN(matrix, N, best);
+        bestCost = RNN(matrix, N, best);
     else
         bestCost = randomTour(matrix, N, best);
 
@@ -93,48 +94,65 @@ Result* SimulatedAnnealing::solve(  int** matrix,
     return result;
 }
 
-int SimulatedAnnealing::NN(int** matrix, int N, int* tour) {
-    bool* visited = new bool[N]();
-    int cost = 0;
+int SimulatedAnnealing::RNN(int** matrix, int N, int* bestTour) {
+    int bestCost = INT_MAX;
 
-    tour[0] = 0;
-    visited[0] = true;
+    bool* visited = new bool[N];
+    int* tour = new int[N];
 
-    for (int step = 1; step < N; step++) {
-        int current = tour[step - 1];
-        int minDist = INT_MAX;
-        int nearest = -1;
+    for (int start = 0; start < N; start++) {
+        // Reset
+        for (int i = 0; i < N; i++) visited[i] = false;
+        int cost = 0;
 
-        for (int j = 0; j < N; j++) {
-            if (!visited[j] && matrix[current][j] < minDist) {
-                minDist = matrix[current][j];
-                nearest = j;
+        tour[0] = start;
+        visited[start] = true;
+
+        for (int step = 1; step < N; step++) {
+            int current = tour[step - 1];
+            int minDist = INT_MAX;
+            int nearest = -1;
+
+            for (int j = 0; j < N; j++) {
+                if (!visited[j] && matrix[current][j] < minDist) {
+                    minDist = matrix[current][j];
+                    nearest = j;
+                }
             }
-        }
 
-        tour[step] = nearest;
-        visited[nearest] = true;
-        cost += minDist;
+            tour[step] = nearest;
+            visited[nearest] = true;
+            cost += minDist;
+        }
+        cost += matrix[tour[N-1]][tour[0]];
+
+        if (cost < bestCost) {
+            bestCost = cost;
+            for (int i = 0; i < N; i++) bestTour[i] = tour[i];
+        }
     }
-    cost += matrix[tour[N-1]][tour[0]];
 
     delete[] visited;
-    return cost;
+    delete[] tour;
+    return bestCost;
 }
 
-int SimulatedAnnealing::randomTour(int** matrix, int N, int* tour) {
+int SimulatedAnnealing::randomTour(int** matrix, int N, int* tour, int seed) {
     int cost = 0;
     for (int i = 0; i < N; i++) tour[i] = i;
+    
+    // std::mt19937 rng(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+    std::mt19937 rng(seed);
     for (int i = N - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
+        int j = std::uniform_int_distribution<int>(0, i)(rng);
         int tmp = tour[i];
         tour[i] = tour[j];
         tour[j] = tmp;
     }
+    
     for (int i = 0; i < N - 1; i++)
         cost += matrix[tour[i]][tour[i + 1]];
     cost += matrix[tour[N-1]][tour[0]];
-
     return cost;
 }
 

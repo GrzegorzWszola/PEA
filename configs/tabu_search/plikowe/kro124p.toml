@@ -1,0 +1,14 @@
+[config]
+algorithms = ["RNN", "TS"]
+mode = "correctness"
+iterations = 1000
+tabu_size = 20
+cadence = 10
+no_aspiration = false
+greedy = true
+swap_algo = 0
+
+[data]
+input = "/home/grzeg/PEA/atsp/kro124p.atsp"
+optimal_value = 36230
+output_path = "result/result_kro124p_no_asp.csv"

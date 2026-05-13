@@ -80,6 +80,45 @@ Data* DataParser::parseInputData(const std::string& inputFilePath, const std::st
     }
 }
 
+Data* DataParser::parseATSP(const std::string& inputFilePath) {
+    std::ifstream file(inputFilePath);
+    if (!file.is_open())
+        throw std::runtime_error("Nie mozna otworzyc pliku: " + inputFilePath);
+
+    int dimension = 0;
+    std::string line;
+    
+    // Czytaj naglowek
+    while (getline(file, line)) {
+        if (line.find("DIMENSION") != std::string::npos)
+            dimension = stoi(line.substr(line.find(":") + 1));
+        if (line.find("EDGE_WEIGHT_SECTION") != std::string::npos)
+            break;
+    }
+
+    if (dimension == 0)
+        throw std::runtime_error("Brak DIMENSION w pliku");
+
+    // Alokacja macierzy
+    int** matrix = new int*[dimension];
+    for (int i = 0; i < dimension; i++)
+        matrix[i] = new int[dimension];
+
+    // Wczytaj macierz - zamieniaj 100000000 na 0 na przekatnej
+    for (int i = 0; i < dimension; i++)
+        for (int j = 0; j < dimension; j++) {
+            file >> matrix[i][j];
+            if (matrix[i][j] == 100000000)
+                matrix[i][j] = 0;
+        }
+
+    Node* nodeList = new Node[dimension];
+    for (int i = 0; i < dimension; i++)
+        nodeList[i] = Node(i + 1, 0, 0);
+
+    return new Data(dimension, nodeList, matrix, nullptr);
+}
+
 Data* DataParser::parseMatrixData(const std::string& inputFilePath) {
     std::ifstream file(inputFilePath);
     if (!file.is_open())

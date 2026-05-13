@@ -65,6 +65,7 @@ namespace Utils {
                                     int N,
                                     int iterations,
                                     const std::string& sAlgo,
+                                    const Config* config,
                                     int offset = 0) {
         // Wyswietl w konsoli
         std::cout << "Algorytm:" << algo << std::endl;
@@ -74,6 +75,8 @@ namespace Utils {
         std::cout << "Dlugosc trasy: " << result->length << std::endl;
         if (data->getOptimal() != nullptr && N == data->getDimension())
             std::cout << "Dlugosc trasy optymalnej: " << data->getOptimal()->length << std::endl;
+        if (config->getOptimalValue() != -1)
+            std::cout << "Dlugosc trasy optymalnej: " << config->getOptimalValue() << std::endl;
         std::cout << "Czas wykonywania: " << result->time << std::endl;
         std::cout << "Blad: " << error << "%" << std::endl;
         if (algo == "RAND") 
@@ -155,10 +158,13 @@ namespace Utils {
         file.close();
     }
 
-    inline double compareResults(const Data* data, const Result* result, int** subMatrix, int N) {
+    inline double compareResults(const Data* data, const Result* result, int** subMatrix, int N, const Config* config) {
         if (data->getOptimal() != nullptr && N == data->getDimension()) {
             // Optymalne rozwiazanie z pliku
             return ((double)(result->length - data->getOptimal()->length) / data->getOptimal()->length) * 100;
+        } else if (config->getOptimalValue() != -1) {
+            int optimalValue = config->getOptimalValue();
+            return ((double)(result->length - optimalValue) / optimalValue) * 100;
         } else if (N <= 15) {
             // Oblicz brute force dla malych instancji
             Result* optimalSolution = Algorithms::branch_and_bound(subMatrix, N, "Best_First1");
@@ -235,30 +241,26 @@ namespace Utils {
                 result = Algorithms::brute_force(subMatrix, N);
             } else if (algoName == "NN") {
                 result = Algorithms::NN(subMatrix, N);
-                error = Utils::compareResults(data, result, subMatrix, N);
             } else if (algoName == "RNN") {
                 result = Algorithms::RNN(subMatrix, N, config->getIterations());
-                error = Utils::compareResults(data, result, subMatrix, N);
             } else if (algoName == "RAND") {
                 result = Algorithms::RAND(subMatrix, N, config->getIterations());
-                error = Utils::compareResults(data, result, subMatrix, N);
             } else if (algoName == "BnB") {
                 result = Algorithms::branch_and_bound(subMatrix, N, config->getSearchAlgo());
-                error = Utils::compareResults(data, result, subMatrix, N);
             } else if (algoName == "TS") {
                 result = Algorithms::tabu_search(data->getMatrix(), N, config->getTabuSize(), config->getIterations(), config->getCadence(), config->getSwapAlgo(), config->getAspiration(), config->getGreedy());
-                error = Utils::compareResults(data, result, subMatrix, N);
             } else if (algoName == "SA") {
                 result = Algorithms::simulated_annealing(data->getMatrix(), N, config->getT0(), config->getAlpha(), config->getEpochLength(), config->getCoolingScheme(), config->getSwapAlgo(), config->getGreedy());
-                error = Utils::compareResults(data, result, subMatrix, N);
             }
+
+            error = Utils::compareResults(data, result, subMatrix, N, config);
 
             for (int i = 0; i < N; i++) delete[] subMatrix[i];
             delete[] subMatrix;
 
             if (result == nullptr) continue;
 
-            Utils::printAndSaveResult(result, data, config->getOutPath(), algoName, error, N, config->getIterations(), config->getSearchAlgo(), startOffset);
+            Utils::printAndSaveResult(result, data, config->getOutPath(), algoName, error, N, config->getIterations(), config->getSearchAlgo(), config, startOffset);
             delete result;
         }
     }

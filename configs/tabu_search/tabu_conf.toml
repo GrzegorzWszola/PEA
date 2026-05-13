@@ -2,12 +2,12 @@
 algorithms = ["NN", "RNN", "TS"]
 # instance_sizes = [15]
 mode = "correctness"
-iterations = 50000
-tabu_size = 11
-cadence = 7
-aspiration = false
+iterations = 1000
+tabu_size = 20
+cadence = 10
+no_aspiration = false
 greedy = true
-swap_algo = 2
+swap_algo = 0
 
 [data]
 input = "/home/grzeg/PEA/data/xqf131.tsp"

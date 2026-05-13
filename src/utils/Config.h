@@ -30,6 +30,7 @@ class Config {
         double alpha;
         int epochLength;
         int coolingScheme;
+        int optimalValue;
     public:
         Config( std::vector<std::string> algo,
                 std::vector<int> inst,
@@ -51,7 +52,8 @@ class Config {
                 double T0,
                 double alpha,
                 int epochLength,
-                int coolingScheme)
+                int coolingScheme,
+                int optimalValue)
                     : algorithms(algo),
                     instanceSizes(inst),
                     repetitions(rep),
@@ -72,7 +74,8 @@ class Config {
                     T0(T0),
                     alpha(alpha),
                     epochLength(epochLength),
-                    coolingScheme(coolingScheme) {
+                    coolingScheme(coolingScheme),
+                    optimalValue(optimalValue) {
                 
                 for (const auto& a : algorithms) {
                     if (std::find(VALID_ALGORITHMS.begin(), VALID_ALGORITHMS.end(), a) == VALID_ALGORITHMS.end())
@@ -110,6 +113,7 @@ class Config {
         double getAlpha() const { return alpha; };
         int getEpochLength() const { return epochLength; };
         int getCoolingScheme() const { return coolingScheme; };
+        int getOptimalValue() const { return optimalValue; };
 
         void print() const {
             std::cout << "--- Konfiguracja ---" << std::endl;
