@@ -1,0 +1,31 @@
+[config]
+algorithms = ["RNN", "TS", "SA", "GA"]
+mode = "correctness"
+repetitions = 10
+iterations = 10000
+
+# GA
+population_size = 400
+crossover_rate = 0.8
+mutation_rate = 0.03
+time_limit = 10000
+crossover_type = 1
+mutation_type = 0
+
+# TS
+tabu_size = 50
+cadence = 10
+aspiration = true
+greedy = true
+swap_algo = 1
+
+# SA
+t0 = 1000.0
+alpha = 0.99
+epoch_length = 100
+cooling_scheme = 0
+
+[data]
+input = "/home/grzeg/PEA/atsp/rbg443.atsp"
+optimal_value = 2720
+output_path = "result/genetic_algorithm_all_rbg443.csv"

@@ -30,6 +30,7 @@ set(SOURCES
     src/algorithms/BnB/BnB.cpp
     src/algorithms/TabuSearch/TabuSearch.cpp
     src/algorithms/SimulatedAnnealing/SimulatedAnnealing.cpp
+    src/algorithms/GeneticAlgorithm/GeneticAlgorithm.cpp
 )
 
 

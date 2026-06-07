@@ -205,6 +205,8 @@ namespace Utils {
                     result = Algorithms::tabu_search(data->getMatrix(), N, config->getTabuSize(), config->getIterations(), config->getCadence(), config->getSwapAlgo(), config->getAspiration(), config->getGreedy());
                 } else if (algoName == "SA") {
                     result = Algorithms::simulated_annealing(data->getMatrix(), N, config->getT0(), config->getAlpha(), config->getEpochLength(), config->getCoolingScheme(), config->getSwapAlgo(), config->getGreedy());
+                } else if (algoName == "GA") {
+                    result = Algorithms::genetic_algorithm(data->getMatrix(), N, config->getPopulationSize(), config->getCrossoverRate(), config->getMutationRate(), config->getTimeLimit(), config->getCrossoverType(), config->getMutationType());
                 }
 
                 delete data;
@@ -251,6 +253,8 @@ namespace Utils {
                 result = Algorithms::tabu_search(data->getMatrix(), N, config->getTabuSize(), config->getIterations(), config->getCadence(), config->getSwapAlgo(), config->getAspiration(), config->getGreedy());
             } else if (algoName == "SA") {
                 result = Algorithms::simulated_annealing(data->getMatrix(), N, config->getT0(), config->getAlpha(), config->getEpochLength(), config->getCoolingScheme(), config->getSwapAlgo(), config->getGreedy());
+            } else if (algoName == "GA") {
+                result = Algorithms::genetic_algorithm(subMatrix, N, config->getPopulationSize(), config->getCrossoverRate(), config->getMutationRate(), config->getTimeLimit(), config->getCrossoverType(), config->getMutationType());
             }
 
             error = Utils::compareResults(data, result, subMatrix, N, config);

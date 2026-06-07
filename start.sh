@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROGRAM="./build/AplikacjaPEA"
-CONFIGS_DIR="configs/tabu_search/plikowe"
+CONFIGS_DIR="configs/genetic_algorithm"
 
 for config in "$CONFIGS_DIR"/*.toml; do
     echo "Uruchamiam: $config"

@@ -6,7 +6,7 @@
 #include <array>
 #include <algorithm>
 
-constexpr std::array<std::string_view, 7> VALID_ALGORITHMS = {"brute-force", "NN", "RNN", "RAND", "BnB", "TS", "SA"};
+constexpr std::array<std::string_view, 8> VALID_ALGORITHMS = {"brute-force", "NN", "RNN", "RAND", "BnB", "TS", "SA", "GA"};
 constexpr std::array<std::string_view, 6> VALID_SEARCH_ALGORITHMS = {"BFS1", "DFS1", "Best_First1", "BFS", "DFS", "Best_First"};
 
 class Config {
@@ -31,6 +31,12 @@ class Config {
         int epochLength;
         int coolingScheme;
         int optimalValue;
+        int populationSize;
+        double crossoverRate;
+        double mutationRate;
+        int timeLimit;
+        int crossoverType;
+        int mutationType;
     public:
         Config( std::vector<std::string> algo,
                 std::vector<int> inst,
@@ -53,7 +59,13 @@ class Config {
                 double alpha,
                 int epochLength,
                 int coolingScheme,
-                int optimalValue)
+                int optimalValue,
+                int populationSize,
+                double crossoverRate,
+                double mutationRate,
+                int timeLimit,
+                int crossoverType,
+                int mutationType)
                     : algorithms(algo),
                     instanceSizes(inst),
                     repetitions(rep),
@@ -75,7 +87,13 @@ class Config {
                     alpha(alpha),
                     epochLength(epochLength),
                     coolingScheme(coolingScheme),
-                    optimalValue(optimalValue) {
+                    optimalValue(optimalValue),
+                    populationSize(populationSize),
+                    crossoverRate(crossoverRate),
+                    mutationRate(mutationRate),
+                    timeLimit(timeLimit),
+                    crossoverType(crossoverType),
+                    mutationType(mutationType) {
                 
                 for (const auto& a : algorithms) {
                     if (std::find(VALID_ALGORITHMS.begin(), VALID_ALGORITHMS.end(), a) == VALID_ALGORITHMS.end())
@@ -114,6 +132,12 @@ class Config {
         int getEpochLength() const { return epochLength; };
         int getCoolingScheme() const { return coolingScheme; };
         int getOptimalValue() const { return optimalValue; };
+        int getPopulationSize() const { return populationSize; };
+        double getCrossoverRate() const { return crossoverRate; };
+        double getMutationRate() const { return mutationRate; };
+        int getTimeLimit() const { return timeLimit; };
+        int getCrossoverType() const { return crossoverType; };
+        int getMutationType() const { return mutationType; };
 
         void print() const {
             std::cout << "--- Konfiguracja ---" << std::endl;
@@ -126,6 +150,13 @@ class Config {
             for (const auto& alg : algorithms) std::cout << alg << " ";
             std::cout << std::endl << "Wielkości instancji: ";
             for (const auto& inst: instanceSizes) std::cout << inst << " ";
-            std::cout << "\n--------------------------" << std::endl;
+            std::cout << "\n--- Parametry GA ---" << std::endl;
+            std::cout << "Rozmiar populacji: " << populationSize << std::endl;
+            std::cout << "Współczynnik krzyżowania: " << crossoverRate << std::endl;
+            std::cout << "Współczynnik mutacji: " << mutationRate << std::endl;
+            std::cout << "Limit czasu: " << timeLimit << "s" << std::endl;
+            std::cout << "Typ krzyżowania: " << crossoverType << " (0: PMX, 1: OX)" << std::endl;
+            std::cout << "Typ mutacji: " << mutationType << std::endl;
+            std::cout << "--------------------------" << std::endl;
         }
 };

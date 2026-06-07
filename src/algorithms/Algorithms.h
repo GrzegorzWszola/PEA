@@ -7,6 +7,7 @@
 #include "BnB/BnB.h"
 #include "TabuSearch/TabuSearch.h"
 #include "SimulatedAnnealing/SimulatedAnnealing.h"
+#include "GeneticAlgorithm/GeneticAlgorithm.h"
 
 class Algorithms {
     public:
@@ -41,5 +42,17 @@ class Algorithms {
                                                     bool greedyStart)
         {
             return SimulatedAnnealing::solve(matrix, N, T0, alpha, epochLength, coolingScheme, swapAlgo, greedyStart);
+        }
+
+        static inline Result* genetic_algorithm(int** matrix,
+                                                int N,
+                                                int populationSize,
+                                                double crossoverRate,
+                                                double mutationRate,
+                                                int timeLimit,
+                                                int crossoverType,
+                                                int mutationType) 
+        {
+            return GeneticAlgorithm::solve(matrix, N, populationSize, crossoverRate, mutationRate, timeLimit, crossoverType, mutationType);
         }
 };
