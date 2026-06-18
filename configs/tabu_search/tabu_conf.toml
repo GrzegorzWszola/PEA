@@ -1,5 +1,5 @@
 [config]
-algorithms = ["NN", "RNN", "TS"]
+algorithms = ["RNN", "TS"]
 # instance_sizes = [15]
 mode = "correctness"
 iterations = 1000
@@ -10,6 +10,6 @@ greedy = true
 swap_algo = 0
 
 [data]
-input = "/home/grzeg/PEA/data/xqf131.tsp"
-optimal = "/home/grzeg/PEA/optimal/xqf131.tour"
+input = "/home/grzegorz/Desktop/PEA/Projekt1/data_zajecia/ft70.txt"
+optimal_value = 38673
 output_path = "../result/result_corr_5-14.csv"

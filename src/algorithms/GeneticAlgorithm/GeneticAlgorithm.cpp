@@ -148,9 +148,17 @@ GeneticAlgorithm::Individual* GeneticAlgorithm::selection(Individual** populatio
 
 void GeneticAlgorithm::mutate(Individual* ind) {
     std::uniform_int_distribution<int> dist(0, N - 1);
-    int i = dist(gen), j = dist(gen);
-    if (i > j) std::swap(i, j);
-    std::reverse(ind->tour + i, ind->tour + j + 1);
+    
+    int left = dist(gen);
+    int right = dist(gen);
+    
+    // upewniamy się że left <= right
+    if (left > right) {
+        std::swap(left, right);
+    }
+    
+    // odwracamy fragment trasy między left a right (włącznie)
+    std::reverse(ind->tour + left, ind->tour + right + 1);
 }
 
 void GeneticAlgorithm::crossover(Individual* p1, Individual* p2, Individual* c1, Individual* c2) {
@@ -160,21 +168,30 @@ void GeneticAlgorithm::crossover(Individual* p1, Individual* p2, Individual* c1,
 
 void GeneticAlgorithm::crossoverPMX(Individual* p1, Individual* p2, Individual* c1, Individual* c2) {
     std::uniform_int_distribution<int> dist(0, N - 1);
+    // Losujemy punkty cięcia
     int cut1 = dist(gen), cut2 = dist(gen);
     if (cut1 > cut2) std::swap(cut1, cut2);
 
+    // Wypelniamy -1
     for (int i = 0; i < N; i++) { c1->tour[i] = -1; c2->tour[i] = -1; }
+
+    // Kopiujemy segment wprost c1 dostaje segment z p1, c2 z p2
     for (int i = cut1; i <= cut2; i++) { c1->tour[i] = p1->tour[i]; c2->tour[i] = p2->tour[i]; }
 
+
     auto mapChild = [&](Individual* child, Individual* parent1, Individual* parent2) {
+        // Iterujemy po segmencie i bierzemy wartość którą parent2 ma na tej pozycji 
         for (int i = cut1; i <= cut2; i++) {
             int val = parent2->tour[i];
+            // Sprawdzamy czy val nie jest już w segmencie dziecka
             bool found = false;
             for (int j = cut1; j <= cut2; j++) if (child->tour[j] == val) { found = true; break; }
             if (!found) {
+                // Zaczynamy śledzić mapowanie. Patrzymy co parent1 ma na pozycji curr
                 int curr = i;
                 while (true) {
                     int vP1 = parent1->tour[curr];
+                    // Szukamy pozycji vP1 w parent2 tam właśnie wskazuje mapowanie
                     int next = -1;
                     for (int k = 0; k < N; k++) if (parent2->tour[k] == vP1) { next = k; break; }
                     if (next < cut1 || next > cut2) { child->tour[next] = val; break; }
@@ -182,6 +199,7 @@ void GeneticAlgorithm::crossoverPMX(Individual* p1, Individual* p2, Individual* 
                 }
             }
         }
+        // Dodaj pozostałe brakujące pozycje
         for (int i = 0; i < N; i++) if (child->tour[i] == -1) child->tour[i] = parent2->tour[i];
     };
     mapChild(c1, p1, p2);
@@ -190,16 +208,27 @@ void GeneticAlgorithm::crossoverPMX(Individual* p1, Individual* p2, Individual* 
 
 void GeneticAlgorithm::crossoverOX(Individual* p1, Individual* p2, Individual* c1, Individual* c2) {
     std::uniform_int_distribution<int> dist(0, N - 1);
+    
+    // Losujemy punkty cięcia
     int c1_idx = dist(gen), c2_idx = dist(gen);
     if (c1_idx > c2_idx) std::swap(c1_idx, c2_idx);
 
     auto fillChild = [&](Individual* child, Individual* parent1, Individual* parent2) {
+        
+        // Tablica zajętych miast — żeby nie wstawić duplikatu
         bool* taken = new bool[N]{false};
+        
+        // Kopiujemy segment wprost z parent1 i zaznaczamy miasta jako zajęte
         for (int i = c1_idx; i <= c2_idx; i++) {
             child->tour[i] = parent1->tour[i];
             taken[parent1->tour[i]] = true;
         }
+        
+        // Zaczynamy wypełniać od pozycji zaraz za segmentem (cyklicznie)
         int curr = (c2_idx + 1) % N;
+        
+        // Przechodzimy przez parent2 zaczynając od pozycji za segmentem
+        // i wstawiamy miasta których jeszcze nie ma w dziecku
         for (int i = 0; i < N; i++) {
             int city = parent2->tour[(c2_idx + 1 + i) % N];
             if (!taken[city]) {
@@ -209,6 +238,8 @@ void GeneticAlgorithm::crossoverOX(Individual* p1, Individual* p2, Individual* c
         }
         delete[] taken;
     };
+    
+    // Wywołujemy dla obojga dzieci z zamienionymi rolami rodziców
     fillChild(c1, p1, p2);
     fillChild(c2, p2, p1);
 }

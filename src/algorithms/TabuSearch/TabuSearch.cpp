@@ -43,9 +43,9 @@ Result* TabuSearch::solve(int** subMatrix,
         }
 
         // // Jeśli lista za duża
-        // while (tabuList.getSize() > tabuSize) {
-        //     tabuList.remove(0);
-        // }
+        while (tabuList.getSize() > tabuSize) {
+            tabuList.remove(0);
+        }
 
         // Przegladamy wszystkich sasiadow aby znalezc najlepszy ruch
         for (int i = 0; i < N - 1; i++) {
@@ -150,8 +150,8 @@ int TabuSearch::randomTour(int** matrix, int N, int* tour, int seed) {
     int cost = 0;
     for (int i = 0; i < N; i++) tour[i] = i;
     
-    // std::mt19937 rng(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-    std::mt19937 rng(seed);  
+    std::mt19937 rng(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+    // std::mt19937 rng(seed);  
     for (int i = N - 1; i > 0; i--) {
         int j = std::uniform_int_distribution<int>(0, i)(rng);
         int tmp = tour[i];
